@@ -35,11 +35,11 @@ Ringbuffer<T>::Ringbuffer(size_t size) {
 template <typename T>
 T* Ringbuffer<T>::allocate_mirrored(size_t size) {
 
-#ifdef PAGESIZE
-	static constexpr unsigned int PAGE_SIZE = PAGESIZE;
-#else
+  #ifdef PAGE_SIZE
+  #undef PAGE_SIZE
+  #endif
+
 	static const unsigned int PAGE_SIZE = ::sysconf(_SC_PAGESIZE);
-#endif
 
     size_t bytes = ((sizeof(T) * size + PAGE_SIZE - 1) / PAGE_SIZE) * PAGE_SIZE;
     if (bytes % sizeof(T)) {
